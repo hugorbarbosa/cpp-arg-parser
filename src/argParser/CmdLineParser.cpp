@@ -1,6 +1,6 @@
 /**
  * @file
- * @copyright Copyright (c) 2022.
+ * @copyright Copyright (c) 2022-2023.
  */
 
 #include "CmdLineParser.h"
@@ -24,19 +24,16 @@ std::vector<std::string> CmdLineParser::getArgs() const
 bool CmdLineParser::hasOption(const std::string& option) const
 {
     const auto it{std::find(mArgs.cbegin(), mArgs.cend(), option)};
-
     return (it != mArgs.cend()) ? true : false;
 }
 
-std::string CmdLineParser::getOption(const std::string& option) const
+std::optional<std::string> CmdLineParser::getOption(const std::string& option) const
 {
     auto it{std::find(mArgs.begin(), mArgs.end(), option)};
-
     if (it != mArgs.end() && ++it != mArgs.end()) {
         return *it;
     }
-
-    return "";
+    return std::nullopt;
 }
 
 void CmdLineParser::setAppName(const std::string& name)

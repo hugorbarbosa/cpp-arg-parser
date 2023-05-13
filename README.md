@@ -38,12 +38,12 @@ The parser is implemented [here](./src/argParser/). An example of how to use it 
 int main(int argc, char const* argv[])
 {
     // Arguments parser instance
-    const auto argParser{std::make_unique<argParser::CmdLineParser>()};
+    argParser::CmdLineParser argParser{};
 
     // Set application information
-    argParser->setAppName("Application name");
-    argParser->setAppVersion("1.0.0");
-    argParser->setAppDescription("Application description");
+    argParser.setAppName("Application name");
+    argParser.setAppVersion("1.0.0");
+    argParser.setAppDescription("Application description");
 
     // Set application usage information
     const std::map<std::string, std::string> options{
@@ -52,44 +52,45 @@ int main(int argc, char const* argv[])
         {"-V, --verbose", "enable verbose messages"},
         {"-f, --file", "file path"},
     };
-    argParser->setAppUsageInfo("AppExec", "-f <file_path> [OPTIONS]", options);
+    argParser.setAppUsageInfo("AppExec", "-f <file_path> [OPTIONS]", options);
 
     // Parse
-    argParser->parse(argc, argv);
+    argParser.parse(argc, argv);
 
-    // Check help option
-    if (argParser->hasOption("-h") || argParser->hasOption("--help")) {
-        argParser->showHelp();
-        return 0;
+    // Check if help option was passed
+    if (argParser.hasOption("-h") || argParser.hasOption("--help")) {
+        argParser.showHelp();
+        return EXIT_SUCCESS;
     }
 
-    // Check version option
-    if (argParser->hasOption("-v") || argParser->hasOption("--version")) {
-        argParser->showVersion();
-        return 0;
+    // Check if version option was passed
+    if (argParser.hasOption("-v") || argParser.hasOption("--version")) {
+        argParser.showVersion();
+        return EXIT_SUCCESS;
     }
 
-    // Check verbose option (option example)
-    auto verbose{false};
-    if (argParser->hasOption("-V") || argParser->hasOption("--verbose")) {
-        verbose = true;
-    }
-
-    // File path (required option example, with value)
-    auto option{argParser->getOption("-f")};
-    if (option.empty()) {
-        option = argParser->getOption("--file");
-        if (option.empty()) {
-            std::cout << "Missing file path" << std::endl;
-            std::cout << std::endl;
-            argParser->showHelp();
+    // File path (example of a mandatory option, with value)
+    auto option{argParser.getOption("-f")};
+    if (!option.has_value()) {
+        option = argParser.getOption("--file");
+        if (!option.has_value()) {
+            std::cout << "Missing file path\n" << std::endl;
+            argParser.showHelp();
+            return EXIT_SUCCESS;
         }
     }
-    if (!option.empty()) {
-        std::cout << "File path: " << option << std::endl;
+    if (option.has_value()) {
+        std::cout << "File path: " << option.value() << std::endl;
     }
 
-    return 0;
+    // Check if verbose option was passed (example of a not mandatory option)
+    auto verbose{false};
+    if (argParser.hasOption("-V") || argParser.hasOption("--verbose")) {
+        verbose = true;
+    }
+    std::cout << "Verbose option passed: " << std::boolalpha << verbose << std::endl;
+
+    return EXIT_SUCCESS;
 }
 ```
 
@@ -156,10 +157,10 @@ $ cmake --build . -j 4
 
 ## Running
 
-After compiling the project, an executable file is created and can be run using the following command (note that the executable may be located in a different directory, depending on the configuration generator):
+After compiling the project, an executable file is created and can be run using the following command (note that some configuration generators (e.g., Visual Studio) may add a configuration folder (e.g., Debug) in the path):
 
 ```sh
-$ ./src/Debug/SimpleArgParser
+$ ./bin/<config>/SimpleArgParser
 ```
 
 ## Tests
