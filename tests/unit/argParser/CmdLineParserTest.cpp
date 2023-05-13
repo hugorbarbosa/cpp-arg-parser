@@ -1,6 +1,6 @@
 /**
  * @file
- * @copyright Copyright (c) 2022.
+ * @copyright Copyright (c) 2022-2023.
  */
 
 #include <argParser/CmdLineParser.h>
@@ -51,14 +51,14 @@ TEST_F(CmdLineParserTest, ParseCommandLineArgs)
 
     // Verify command line args
     const auto args{mCmdLineParser->getArgs()};
-
     EXPECT_EQ(args.size(), argc);
-    EXPECT_EQ(args.at(0), std::string(argv[0]));
-    EXPECT_EQ(args.at(1), std::string(argv[1]));
+    for (auto i{0}; i < argc; ++i) {
+        EXPECT_EQ(args.at(i), std::string(argv[i]));
+    }
 }
 
 /**
- * @brief Test if parser has the command line option passed.
+ * @brief Test if the parser has the command line option passed.
  */
 TEST_F(CmdLineParserTest, HaveCommandOption)
 {
@@ -67,15 +67,17 @@ TEST_F(CmdLineParserTest, HaveCommandOption)
 
     mCmdLineParser->parse(argc, argv);
 
-    // Verify if option is present
-    const auto hasOptionArg{mCmdLineParser->hasOption(std::string(argv[1]))};
-    EXPECT_TRUE(hasOptionArg);
+    // Verify if options are present
+    for (auto i{0}; i < argc; ++i) {
+        const auto hasOptionArg{mCmdLineParser->hasOption(std::string(argv[i]))};
+        EXPECT_TRUE(hasOptionArg);
+    }
 }
 
 /**
- * @brief Test if parser does not have a command line option not passed.
+ * @brief Test if the parser does not have a command line option that was not passed.
  */
-TEST_F(CmdLineParserTest, NotHaveCommandOption)
+TEST_F(CmdLineParserTest, DoNotHaveCommandOption)
 {
     const int argc = 2;
     const char* argv[] = {"exe", "-h"};
@@ -103,9 +105,9 @@ TEST_F(CmdLineParserTest, GetCommandOptionValue)
 }
 
 /**
- * @brief Test if parser returns an empty string when the command line option value is not passed.
+ * @brief Test if parser does not return a value when the command line option value is not passed.
  */
-TEST_F(CmdLineParserTest, GetCommandOptionEmpty)
+TEST_F(CmdLineParserTest, GetCommandOptionNull)
 {
     const int argc = 2;
     const char* argv[] = {"exe", "--param"};
@@ -114,7 +116,7 @@ TEST_F(CmdLineParserTest, GetCommandOptionEmpty)
 
     // Verify option value
     const auto value{mCmdLineParser->getOption(std::string(argv[1]))};
-    EXPECT_TRUE(value.empty());
+    EXPECT_FALSE(value.has_value());
 }
 
 /**
@@ -138,7 +140,7 @@ TEST_F(CmdLineParserTest, SetAppVersion)
 }
 
 /**
- * @brief Test the defintion of the application description.
+ * @brief Test the definition of the application description.
  */
 TEST_F(CmdLineParserTest, SetAppDescription)
 {
@@ -148,7 +150,7 @@ TEST_F(CmdLineParserTest, SetAppDescription)
 }
 
 /**
- * @brief Test the defintion of the application usage information.
+ * @brief Test the definition of the application usage information.
  */
 TEST_F(CmdLineParserTest, SetAppUsageInfo)
 {

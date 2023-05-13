@@ -1,11 +1,12 @@
 /**
  * @file
- * @copyright Copyright (c) 2022.
+ * @copyright Copyright (c) 2022-2023.
  */
 
 #pragma once
 
 #include <map>
+#include <optional>
 #include <string>
 #include <vector>
 
@@ -18,11 +19,6 @@ class CmdLineParser
 {
 public:
     /**
-     * @brief Constructor.
-     */
-    CmdLineParser() = default;
-
-    /**
      * @brief Parse the command line arguments.
      *
      * @param argc Number of command line arguments.
@@ -33,7 +29,7 @@ public:
     /**
      * @brief Get the command line arguments.
      *
-     * @return Vector with the command line arguments.
+     * @return Command line arguments.
      */
     [[nodiscard]] std::vector<std::string> getArgs() const;
 
@@ -56,9 +52,9 @@ public:
      *
      * @param option Command line option to check if was passed and to get its value.
      *
-     * @return Command line option value if the option was passed, an empty string otherwise.
+     * @return Command line option value if the option was passed, a null optional otherwise.
      */
-    std::string getOption(const std::string& option) const;
+    std::optional<std::string> getOption(const std::string& option) const;
 
     /**
      * @brief Set the application name.
