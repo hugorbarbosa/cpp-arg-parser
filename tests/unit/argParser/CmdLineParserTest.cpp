@@ -11,7 +11,7 @@ using namespace testing;
 using namespace argParser;
 
 /**
- * @brief Test class of CmdLineParser.
+ * @brief Test suite of command line arguments parser.
  */
 class CmdLineParserTest : public Test
 {
@@ -24,35 +24,25 @@ protected:
     {
     }
 
-    /**
-     * @brief Test suite setup.
-     */
-    void SetUp() override {}
-
-    /**
-     * @brief Test suite teardown.
-     */
-    void TearDown() override {}
-
 protected:
     /// Command line parser.
-    std::unique_ptr<CmdLineParser> mCmdLineParser{};
+    std::unique_ptr<CmdLineParser> mCmdLineParser;
 };
 
 /**
- * @brief Test if the command line arguments are parsed correctly.
+ * @brief Test if the command line arguments are correctly parsed.
  */
 TEST_F(CmdLineParserTest, ParseCommandLineArgs)
 {
-    const int argc = 2;
+    const int argc{2};
     const char* argv[] = {"exe", "--help"};
 
     mCmdLineParser->parse(argc, argv);
 
     // Verify command line args
     const auto args{mCmdLineParser->getArgs()};
-    EXPECT_EQ(args.size(), argc);
-    for (auto i{0}; i < argc; ++i) {
+    ASSERT_EQ(args.size(), argc);
+    for (auto i = 0; i < argc; ++i) {
         EXPECT_EQ(args.at(i), std::string(argv[i]));
     }
 }
@@ -62,15 +52,14 @@ TEST_F(CmdLineParserTest, ParseCommandLineArgs)
  */
 TEST_F(CmdLineParserTest, HaveCommandOption)
 {
-    const int argc = 2;
+    const int argc{2};
     const char* argv[] = {"exe", "-h"};
 
     mCmdLineParser->parse(argc, argv);
 
     // Verify if options are present
-    for (auto i{0}; i < argc; ++i) {
-        const auto hasOptionArg{mCmdLineParser->hasOption(std::string(argv[i]))};
-        EXPECT_TRUE(hasOptionArg);
+    for (auto i = 0; i < argc; ++i) {
+        EXPECT_TRUE(mCmdLineParser->hasOption(std::string(argv[i])));
     }
 }
 
@@ -79,14 +68,13 @@ TEST_F(CmdLineParserTest, HaveCommandOption)
  */
 TEST_F(CmdLineParserTest, DoNotHaveCommandOption)
 {
-    const int argc = 2;
+    const int argc{2};
     const char* argv[] = {"exe", "-h"};
 
     mCmdLineParser->parse(argc, argv);
 
     // Verify if option is not present
-    const auto hasOptionArg{mCmdLineParser->hasOption("-v")};
-    EXPECT_FALSE(hasOptionArg);
+    EXPECT_FALSE(mCmdLineParser->hasOption("-v"));
 }
 
 /**
@@ -94,28 +82,28 @@ TEST_F(CmdLineParserTest, DoNotHaveCommandOption)
  */
 TEST_F(CmdLineParserTest, GetCommandOptionValue)
 {
-    const int argc = 3;
+    const int argc{3};
     const char* argv[] = {"exe", "--param", "1"};
 
     mCmdLineParser->parse(argc, argv);
 
     // Verify option value
-    const auto value{mCmdLineParser->getOption(std::string(argv[1]))};
+    const auto value = mCmdLineParser->getOption(std::string(argv[1]));
     EXPECT_EQ(value, std::string(argv[2]));
 }
 
 /**
- * @brief Test if parser does not return a value when the command line option value is not passed.
+ * @brief Test if the parser does not return a value when the command line option value is not passed.
  */
 TEST_F(CmdLineParserTest, GetCommandOptionNull)
 {
-    const int argc = 2;
+    const int argc{2};
     const char* argv[] = {"exe", "--param"};
 
     mCmdLineParser->parse(argc, argv);
 
     // Verify option value
-    const auto value{mCmdLineParser->getOption(std::string(argv[1]))};
+    const auto value = mCmdLineParser->getOption(std::string(argv[1]));
     EXPECT_FALSE(value.has_value());
 }
 

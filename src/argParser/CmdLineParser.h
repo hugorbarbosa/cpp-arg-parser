@@ -31,7 +31,7 @@ public:
      *
      * @return Command line arguments.
      */
-    [[nodiscard]] std::vector<std::string> getArgs() const;
+    std::vector<std::string> getArgs() const;
 
     /**
      * @brief Check if the command line arguments has the option specified.
@@ -70,7 +70,7 @@ public:
      *
      * @return Application name.
      */
-    [[nodiscard]] std::string getAppName() const;
+    std::string getAppName() const;
 
     /**
      * @brief Set the application version.
@@ -86,7 +86,7 @@ public:
      *
      * @return Application version.
      */
-    [[nodiscard]] std::string getAppVersion() const;
+    std::string getAppVersion() const;
 
     /**
      * @brief Set the application description.
@@ -102,7 +102,7 @@ public:
      *
      * @return Application description.
      */
-    [[nodiscard]] std::string getAppDescription() const;
+    std::string getAppDescription() const;
 
     /**
      * @brief Show the version information.
@@ -137,21 +137,21 @@ public:
      *
      * @return Executable name of the application.
      */
-    [[nodiscard]] std::string getExeAppName() const;
+    std::string getExeAppName() const;
 
     /**
      * @brief Get the usage information of the options.
      *
      * @return Usage information of the options.
      */
-    [[nodiscard]] std::string getOptionsUsageInfo() const;
+    std::string getOptionsUsageInfo() const;
 
     /**
      * @brief Get the command line options defined to be used in the help message.
      *
      * @return Map with the options.
      */
-    [[nodiscard]] std::map<std::string, std::string> getOptions() const;
+    std::map<std::string, std::string> getOptions() const;
 
     /**
      * @brief Show the help message.

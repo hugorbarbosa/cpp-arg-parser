@@ -11,7 +11,7 @@ namespace argParser {
 
 void CmdLineParser::parse(const int argc, char const* argv[])
 {
-    for (auto i{0}; i < argc; ++i) {
+    for (auto i = 0; i < argc; ++i) {
         mArgs.push_back(std::string(argv[i]));
     }
 }
@@ -23,13 +23,13 @@ std::vector<std::string> CmdLineParser::getArgs() const
 
 bool CmdLineParser::hasOption(const std::string& option) const
 {
-    const auto it{std::find(mArgs.cbegin(), mArgs.cend(), option)};
-    return (it != mArgs.cend()) ? true : false;
+    const auto it = std::find(mArgs.cbegin(), mArgs.cend(), option);
+    return it != mArgs.cend();
 }
 
 std::optional<std::string> CmdLineParser::getOption(const std::string& option) const
 {
-    auto it{std::find(mArgs.begin(), mArgs.end(), option)};
+    auto it = std::find(mArgs.begin(), mArgs.end(), option);
     if (it != mArgs.end() && ++it != mArgs.end()) {
         return *it;
     }

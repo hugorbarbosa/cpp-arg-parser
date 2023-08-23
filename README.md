@@ -52,7 +52,7 @@ int main(int argc, char const* argv[])
         {"-V, --verbose", "enable verbose messages"},
         {"-f, --file", "file path"},
     };
-    argParser.setAppUsageInfo("AppExec", "-f <file_path> [OPTIONS]", options);
+    argParser.setAppUsageInfo("AppExec", "-f <file_path> [options]", options);
 
     // Parse
     argParser.parse(argc, argv);
@@ -70,7 +70,7 @@ int main(int argc, char const* argv[])
     }
 
     // File path (example of a mandatory option, with value)
-    auto option{argParser.getOption("-f")};
+    auto option = argParser.getOption("-f");
     if (!option.has_value()) {
         option = argParser.getOption("--file");
         if (!option.has_value()) {
@@ -79,12 +79,10 @@ int main(int argc, char const* argv[])
             return EXIT_SUCCESS;
         }
     }
-    if (option.has_value()) {
-        std::cout << "File path: " << option.value() << std::endl;
-    }
+    std::cout << "File path: " << option.value() << std::endl;
 
     // Check if verbose option was passed (example of a not mandatory option)
-    auto verbose{false};
+    bool verbose{false};
     if (argParser.hasOption("-V") || argParser.hasOption("--verbose")) {
         verbose = true;
     }
@@ -101,7 +99,7 @@ The following are some results using the options available in this example:
 - Specifying the help option:
     ```sh
     $ ./SimpleArgParser -h
-    Usage: AppExec -f <file_path> [OPTIONS]
+    Usage: AppExec -f <file_path> [options]
         -V, --verbose           enable verbose messages
         -f, --file              file path
         -h, --help              show help message
