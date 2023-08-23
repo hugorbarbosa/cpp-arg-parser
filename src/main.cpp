@@ -3,8 +3,8 @@
  * @copyright Copyright (c) 2022-2023.
  */
 
-#include <argParser/CmdLineParser.h>
 #include <cassert>
+#include <CmdLineParser.h>
 #include <iostream>
 
 /**

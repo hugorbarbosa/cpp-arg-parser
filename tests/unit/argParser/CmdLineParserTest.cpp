@@ -3,7 +3,7 @@
  * @copyright Copyright (c) 2022-2023.
  */
 
-#include <argParser/CmdLineParser.h>
+#include <CmdLineParser.h>
 #include <gtest/gtest.h>
 #include <memory>
 
