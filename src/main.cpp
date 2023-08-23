@@ -4,6 +4,7 @@
  */
 
 #include <argParser/CmdLineParser.h>
+#include <cassert>
 #include <iostream>
 
 /**
@@ -31,7 +32,7 @@ int main(int argc, char const* argv[])
         {"-V, --verbose", "enable verbose messages"},
         {"-f, --file", "file path"},
     };
-    argParser.setAppUsageInfo("AppExec", "-f <file_path> [OPTIONS]", options);
+    argParser.setAppUsageInfo("AppExec", "-f <file_path> [options]", options);
 
     // Parse
     argParser.parse(argc, argv);
@@ -49,7 +50,7 @@ int main(int argc, char const* argv[])
     }
 
     // File path (example of a mandatory option, with value)
-    auto option{argParser.getOption("-f")};
+    auto option = argParser.getOption("-f");
     if (!option.has_value()) {
         option = argParser.getOption("--file");
         if (!option.has_value()) {
@@ -58,12 +59,11 @@ int main(int argc, char const* argv[])
             return EXIT_SUCCESS;
         }
     }
-    if (option.has_value()) {
-        std::cout << "File path: " << option.value() << std::endl;
-    }
+    assert(option.has_value() && "File path option must have a value");
+    std::cout << "File path: " << option.value() << std::endl;
 
     // Check if verbose option was passed (example of a not mandatory option)
-    auto verbose{false};
+    bool verbose{false};
     if (argParser.hasOption("-V") || argParser.hasOption("--verbose")) {
         verbose = true;
     }

@@ -15,7 +15,7 @@ add_executable(${PROJECT_NAME}
 # Build
 
 target_include_directories(${PROJECT_NAME}
-    PRIVATE ${CMAKE_SOURCE_DIR}/src
+    PRIVATE .
 )
 
 target_link_libraries(${PROJECT_NAME}
