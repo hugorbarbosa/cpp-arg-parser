@@ -14,10 +14,6 @@ add_executable(${PROJECT_NAME}
 # ----------------------------------------------------------------------------
 # Build
 
-target_include_directories(${PROJECT_NAME}
-    PRIVATE .
-)
-
 target_link_libraries(${PROJECT_NAME}
     PRIVATE SimpleArgParser::ArgParser
 )
